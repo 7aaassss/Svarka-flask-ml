@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки аккаунта</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function openChangePasswordPopup() {
+            document.getElementById('changePasswordModal').style.display = 'block';
+        }
+
+        function closeChangePasswordPopup() {
+            document.getElementById('changePasswordModal').style.display = 'none';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Настройки аккаунта</h1>
+        <form method="POST">
+            <div>
+                <label for="login">Имя пользователя:</label>
+                <input type="text" id="login" name="login" value="{{ current_user.login }}" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ current_user.email }}" required>
+            </div>
+            <div>
+                <label for="name">Имя:</label>
+                <input type="text" id="name" name="name" value="{{ current_user.name }}">
+            </div>
+            <div>
+                <label for="surname">Фамилия:</label>
+                <input type="text" id="surname" name="surname" value="{{ current_user.surname }}">
+            </div>
+            <button type="submit">Сохранить изменения</button>
+        </form>
+        <button onclick="openChangePasswordPopup()">Изменить пароль</button>
+
+
+        <div id="changePasswordModal" style="display: none;">
+            <div class="modal-content">
+                <span onclick="closeChangePasswordPopup()" style="cursor: pointer;">&times;</span>
+                <h2>Изменить пароль</h2>
+                <form method="POST" action="{{ url_for('change_password') }}">
+                    <div>
+                        <label for="old_password">Старый пароль:</label>
+                        <input type="password" id="old_password" name="old_password" required>
+                    </div>
+                    <div>
+                        <label for="new_password">Новый пароль:</label>
+                        <input type="password" id="new_password" name="new_password" required>
+                    </div>
+                    <div>
+                        <label for="confirm_password">Подтвердите новый пароль:</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                    </div>
+                    <button type="submit">Изменить пароль</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

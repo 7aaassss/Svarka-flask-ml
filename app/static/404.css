@@ -1,0 +1,54 @@
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #222;
+}
+
+
+.error-container {
+    background-color: #333;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    margin: 20px;
+}
+
+
+.error-message {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #800080;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #5a005a;
+    transform: translateY(-2px); /* эффект поднятия при наведении */
+}
+
+.button:active {
+    background-color: #800080;
+    transform: translateY(0); /* сброс эффекта при нажатии */
+}

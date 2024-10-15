@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сварочка</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .drop-area {
+            border: 2px dashed #800080;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background-color: #444;
+            color: #fff;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .drop-area.hover {
+            background-color: #555;
+        }
+
+        #clearButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #clearButton:hover {
+            color: #ff6666;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: white; font-family: Arial, sans-serif;">Детекция дефектов сварочных швов</h1>
+        <form id="uploadForm" action="{{ url_for('upload_pic') }}" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="drop-area" id="dropArea">
+                Перетащите файл сюда или <label for="file" class="file-label">выберите файл</label>
+                <input type="file" id="file" name="file" accept="image/*" onchange="previewImage(event)">
+                <button id="clearButton" onclick="clearImagePreview()">✕</button>
+                <div id="imagePreview" class="image-preview"></div>
+            </div>
+            <div class="methods">
+                <label for="methodSelect">Выберите режим поиска дефектов</label>
+                {{ form.methodSelect(class="form-control", id="methodSelect") }}
+            </div>
+            <button type="submit" class="button">Загрузить</button>
+        </form>
+        <div id="messages"></div>
+    </div>
+
+    <script>
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('file');
+
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('hover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('hover'), false);
+        });
+
+
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        fileInput.addEventListener('change', (event) => {
+            handleFiles(event.target.files);
+        });
+
+        function handleFiles(files) {
+            const file = files[0];
+            if (file) {
+                previewImage({ target: { files: [file] } });
+            }
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const imageUrl = event.target.result;
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.innerHTML = `<img src="${imageUrl}" alt="Предварительный просмотр изображения">`;
+                document.getElementById('clearButton').style.display = 'block'; // показать кнопку очистки
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function clearImagePreview() {
+            const fileInput = document.getElementById('file');
+            fileInput.value = ''; // сбросить выбранный файл
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.innerHTML = ''; // очистить предварительный просмотр
+            const clearButton = document.getElementById('clearButton');
+            clearButton.style.display = 'none'; // скрыть кнопку очистки
+        }
+    </script>
+</body>
+</html>

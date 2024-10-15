@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои фотографий</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='myimages.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Мои результаты</h1>
+        <div class="photo-grid">
+            {% for sent_photo, processed_photo in pairs %}
+                <div class="photo-tile">
+                    <div class="photo">
+                        <h2>Отправленная</h2>
+                        <img src="{{ url_for('static', filename=sent_photo.path) }}" alt="Отправленная фотография" onclick="openModal(this)">
+                    </div>
+                    <div class="photo">
+                        <h2>Обработанная</h2>
+                        {% if processed_photo %}
+                            <img src="{{ url_for('static', filename=processed_photo.path) }}" alt="Обработанная фотография" onclick="openModal(this)">
+                        {% else %}
+                            <p>Обработанная фотография отсутствует</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="photoModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+
+    <script>
+        function openModal(img) {
+            var modal = document.getElementById("photoModal");
+            var modalImg = document.getElementById("modalImg");
+            modal.style.display = "block";
+            modalImg.src = img.src;
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("photoModal");
+            modal.style.display = "none";
+        }
+    </script>
+</body>
+</html>

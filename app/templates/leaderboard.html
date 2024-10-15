@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лидерборд</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lead.css') }}">
+</head>
+<body>
+
+    <h1>Лидерборд</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Post</th>
+                <th>Всего фото загружено</th>
+                <th>Процент дефекта</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.name }} {{ employee.surname }}</td>
+                <td>{{ employee.post }}</td>
+                <td class="center">{{ employee.total_photos_uploaded }}</td>
+                <td class="center">{{ employee.percentage }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

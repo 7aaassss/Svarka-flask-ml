@@ -78,4 +78,4 @@
 ```sudo ufw allow 8000```
 
 ## База данных
-![DB](./docs/db.png)
+![DB](./app/db.png)
